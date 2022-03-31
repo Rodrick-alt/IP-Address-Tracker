@@ -52,30 +52,6 @@ function App() {
     }
   }
 
-  window.onload = () => {
-
-    // fetch request to retrive client Ip address
-    fetch("https://api.ipdata.co")
-      .then(response => {
-        return response.json();
-      }, "jsonp")
-      .then(res => {
-
-        // ajax request to Geolocation api with clients IP address
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", `
-      https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=${res.ip}`);
-        xhr.onload = function (event) {
-          setLoadStyle('loading-done');
-          let target = event.target;
-          handleResponse(target.response); // raw response
-        };
-        xhr.send();
-
-      })
-      .catch(err => console.log(err))
-  }
-
 
   return (
     <div id='page-wrapper'>
