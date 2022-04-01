@@ -12,6 +12,8 @@ function App() {
   const [isp, setISP] = useState('SpaceX Starlink');
   const [latLong, setLatLong] = useState([51.505, -0.09]);
 
+  let clientIP = '';
+
   // loading anim style switch
   const [loading, setLoadStyle] = useState('loading-done');
 
@@ -33,7 +35,7 @@ function App() {
     })
   }
 
-  // triggers ajax request
+  // triggers ajax request to Geolocation api
   function handleSubmit(event) {
     if (formInput !== '') {
       event.preventDefault();
@@ -50,6 +52,36 @@ function App() {
       };
       xhr.send();
     }
+  }
+
+
+  // See their own IP Address on the map on the initial page load
+
+  // function to fetch client ip address from API
+  function YourIP() {
+    setLoadStyle('loading');
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", `https://geolocation-db.com/json/`);
+    xhr.onload = function (event) {
+      let target = event.target;
+      let obj = JSON.parse(target.response);
+      clientIP = `${obj.IPv4}`;
+    };
+    xhr.send();
+  }
+
+  window.onload = () => {
+    YourIP();
+    // triggers ajax request to Geolocation api
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", `
+      https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=${clientIP}`);
+    xhr.onload = function (event) {
+      setLoadStyle('loading-done');
+      let target = event.target;
+      handleResponse(target.response);
+    };
+    xhr.send();
   }
 
 
