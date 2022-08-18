@@ -12,8 +12,6 @@ function App() {
   const [isp, setISP] = useState('SpaceX Starlink');
   const [latLong, setLatLong] = useState([51.505, -0.09]);
 
-  let clientIP = '';
-
   // loading anim style switch
   const [loading, setLoadStyle] = useState('loading-done');
 
@@ -35,16 +33,22 @@ function App() {
     })
   }
 
-  // triggers ajax request to Geolocation api
+
+  // ajax request to Geolocation api
   function handleSubmit(event) {
     if (formInput !== '') {
       event.preventDefault();
       setLoadStyle('loading');
+      let parem;
 
-      let ipaddress = formInput;
+      if (formInput.match(/\./ig).length === 1) {
+        parem = `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&domain=${formInput}`;
+      } else {
+        parem = `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=${formInput}`;
+      }
+
       var xhr = new XMLHttpRequest();
-      xhr.open("GET", `
-      https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=${ipaddress}`);
+      xhr.open("GET", parem);
       xhr.onload = function (event) {
         setLoadStyle('loading-done');
         let target = event.target;
@@ -55,27 +59,12 @@ function App() {
   }
 
 
-  // See their own IP Address on the map on the initial page load
-
-  // function to fetch client ip address from API
-  function YourIP() {
-    setLoadStyle('loading');
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", `https://geolocation-db.com/json/`);
-    xhr.onload = function (event) {
-      let target = event.target;
-      let obj = JSON.parse(target.response);
-      clientIP = `${obj.IPv4}`;
-    };
-    xhr.send();
-  }
-
   window.onload = () => {
-    YourIP();
-    // triggers ajax request to Geolocation api
+    // Ajax requests to Geolocation api with blank Parem
+    // default to requesters IP address
     var xhr = new XMLHttpRequest();
     xhr.open("GET", `
-      https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=${clientIP}`);
+      https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=`);
     xhr.onload = function (event) {
       setLoadStyle('loading-done');
       let target = event.target;
@@ -87,7 +76,6 @@ function App() {
 
   return (
     <div id='page-wrapper'>
-
       <header>
         <h1 id='title'>IP Address Tracker</h1>
 
