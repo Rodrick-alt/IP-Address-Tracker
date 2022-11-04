@@ -3,15 +3,21 @@
 
 <head>
   <meta charset="utf-8" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
+
   <!--WebFonts-->
-  <link href="https://fonts.google.com/specimen/Rubik"
+  <link
     rel="stylesheet"
-    type="text/css"
+    href="https://fonts.google.com/specimen/Rubik"
     media="print"
     onload="this.media='all'" />
+  <noscript>
+    <link
+      href="https://fonts.google.com/specimen/Rubik"
+      rel="stylesheet"
+      type="text/css" />
+  </noscript>
 
   <!-- Leaflet Library CDN-->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -22,8 +28,7 @@
     crossorigin=""></script>
 
   <!--Header-SEO-->
-  <!-- <link href="https://example.com/" rel="canonical" /> -->
-  <link rel="icon" type="image/png" href="./favicon-32x32.png" />
+  <link rel="icon" type="image/png" href="./Icon.png" />
   <meta name="description" content="This is an example." />
   <title>IP Address Tracker</title>
 </head>
@@ -32,6 +37,7 @@
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
 </body>
+
 <script type='text/javascript' src='../src/config.js'></script>
 
 </html>

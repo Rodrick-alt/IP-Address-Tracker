@@ -24,20 +24,24 @@ function App() {
   // handle Response processing
   function handleResponse(response) {
     const obj = JSON.parse(response);
-    setAddress(obj.ip);
-    setLocation(`${obj.location.region}, ${obj.location.city}`);
-    setTimezone(`UTC${obj.location.timezone}`);
-    setISP(`${obj.isp}`);
-    setLatLong((oldarray) => {
-      return [oldarray[0] = obj.location.lat, oldarray[1] = obj.location.lng]
-    })
+    if (obj.code) {
+      alert('INCORRET INPUT!' + '\n' + 'Try Google.com (domian) or 8.8.8.8 (IP Address)')
+    } else {
+      setAddress(obj.ip);
+      setLocation(`${obj.location.region}, ${obj.location.city}`);
+      setTimezone(`UTC${obj.location.timezone}`);
+      setISP(`${obj.isp}`);
+      setLatLong((oldarray) => {
+        return [oldarray[0] = obj.location.lat, oldarray[1] = obj.location.lng]
+      })
+    }
   }
 
 
   // ajax request to Geolocation api
   function handleSubmit(event) {
-    if (formInput !== '') {
-      event.preventDefault();
+    event.preventDefault();
+    if (formInput !== '' && formInput.match(/\./ig) !== null) {
       setLoadStyle('loading');
       let parem;
 
@@ -47,6 +51,7 @@ function App() {
         parem = `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=${formInput}`;
       }
 
+
       var xhr = new XMLHttpRequest();
       xhr.open("GET", parem);
       xhr.onload = function (event) {
@@ -55,6 +60,8 @@ function App() {
         handleResponse(target.response); // raw response
       };
       xhr.send();
+    } else {
+      alert('INCORRET INPUT!' + '\n' + 'Try Google.com (domian) or 8.8.8.8 (IP Address)')
     }
   }
 
@@ -82,8 +89,8 @@ function App() {
         <form id='search-form'>
           <input type='search'
             id='search-input'
-            required
             onChange={handleInput}
+            required
             placeholder='Search for any IP address or domain ' />
           <button type='submit' onClick={handleSubmit}>
             <img src={arrow} alt='' />

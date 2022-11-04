@@ -265,6 +265,7 @@ main{
     }
     #IP-info p{
         font-size: 1rem;
+        text-align: center;
     }
 }
 
