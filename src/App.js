@@ -25,7 +25,7 @@ function App() {
   function handleResponse(response) {
     const obj = JSON.parse(response);
     if (obj.code) {
-      alert('INCORRET INPUT!' + '\n' + 'Try Google.com (domian) or 8.8.8.8 (IP Address)')
+      console.log("Incorrect Input")
     } else {
       setAddress(obj.ip);
       setLocation(`${obj.location.region}, ${obj.location.city}`);
@@ -40,8 +40,8 @@ function App() {
 
   // ajax request to Geolocation api
   function handleSubmit(event) {
-    event.preventDefault();
     if (formInput !== '' && formInput.match(/\./ig) !== null) {
+      event.preventDefault();
       setLoadStyle('loading');
       let parem;
 
@@ -50,7 +50,6 @@ function App() {
       } else {
         parem = `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=${formInput}`;
       }
-
 
       var xhr = new XMLHttpRequest();
       xhr.open("GET", parem);
@@ -61,7 +60,7 @@ function App() {
       };
       xhr.send();
     } else {
-      alert('INCORRET INPUT!' + '\n' + 'Try Google.com (domian) or 8.8.8.8 (IP Address)')
+      console.log("Incorrect Input")
     }
   }
 
@@ -69,6 +68,7 @@ function App() {
   window.onload = () => {
     // Ajax requests to Geolocation api with blank Parem
     // default to requesters IP address
+    // Test on Safari with Content Blockers Turned Off
     var xhr = new XMLHttpRequest();
     xhr.open("GET", `
       https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=`);
@@ -91,7 +91,7 @@ function App() {
             id='search-input'
             onChange={handleInput}
             required
-            placeholder='Search for any IP address or domain ' />
+            placeholder='IP address (8.8.8.8) or domain (Google.com)' />
           <button type='submit' onClick={handleSubmit}>
             <img src={arrow} alt='' />
           </button>
@@ -126,10 +126,8 @@ function App() {
             <h5 className='subHeader'>ISP</h5>
             <p id='ISP'>{isp}</p>
           </div>
-
         </div>
       </header>
-
 
       <main>
         <div id='map'>
